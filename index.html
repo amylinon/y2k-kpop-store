@@ -7,6 +7,31 @@
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Comic+Neue:wght@300;400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.amplitude.com/script/6d4b73beefd506ae720715efeff6a26a.js"></script><script>window.amplitude.add(window.sessionReplay.plugin({sampleRate: 1}));window.amplitude.init('6d4b73beefd506ae720715efeff6a26a', {"fetchRemoteConfig":true,"autocapture":{"attribution":true,"fileDownloads":true,"formInteractions":true,"pageViews":true,"sessions":true,"elementInteractions":true,"networkTracking":true,"webVitals":true,"frustrationInteractions":true}});</script>
+    
+    <!-- Statsig SDK -->
+    <script type="module">
+        import { StatsigClient } from './node_modules/@statsig/js-client/dist/index.js';
+        import { StatsigSessionReplayPlugin } from './node_modules/@statsig/session-replay/dist/index.js';
+        import { StatsigAutoCapturePlugin } from './node_modules/@statsig/web-analytics/dist/index.js';
+
+        const myStatsigClient = new StatsigClient(
+            "client-wfc6mrHMMNblKH5jHe2piKSzRHipfR75T6eyY0cmir0", 
+            { userID: "user-id" },
+            {
+                plugins: [
+                    new StatsigSessionReplayPlugin(),
+                    new StatsigAutoCapturePlugin(),
+                ],
+            }
+        );
+
+        await myStatsigClient.initializeAsync();
+        
+        // Make Statsig client globally available
+        window.myStatsigClient = myStatsigClient;
+        
+        console.log('Statsig initialized successfully');
+    </script>
 </head>
 <body>
     <div class="matrix-bg"></div>

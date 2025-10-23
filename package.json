@@ -1,0 +1,25 @@
+{
+  "name": "y2k-kpop-store",
+  "version": "1.0.0",
+  "description": "A nostalgic Y2K-themed e-commerce website showcasing K-Pop albums from popular groups like TWICE and NewJeans.",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amylinon/y2k-kpop-store.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/amylinon/y2k-kpop-store/issues"
+  },
+  "homepage": "https://github.com/amylinon/y2k-kpop-store#readme",
+  "dependencies": {
+    "@statsig/js-client": "^3.28.1",
+    "@statsig/session-replay": "^3.28.1",
+    "@statsig/web-analytics": "^3.28.1"
+  }
+}
