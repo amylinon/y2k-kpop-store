@@ -1,6 +1,26 @@
-// Y2K K-Pop Store Interactive Elements
+// Y2K K-Pop Store Interactive Elements with Amplitude Tracking
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize Amplitude tracking for interactive elements
+    function trackAmplitudeEvent(eventName, properties = {}) {
+        if (typeof window.amplitude !== 'undefined') {
+            window.amplitude.track(eventName, {
+                ...properties,
+                timestamp: new Date().toISOString(),
+                page: 'Y2K K-Pop Store'
+            });
+            console.log('Amplitude event tracked:', eventName, properties);
+        } else {
+            console.warn('Amplitude not available for tracking:', eventName);
+        }
+    }
+
+    // Track page view
+    trackAmplitudeEvent('Page View', {
+        page_title: 'Y2K K-Pop Store',
+        section: 'home'
+    });
+
     // Smooth scrolling for navigation links
     const navLinks = document.querySelectorAll('.nav-link');
     navLinks.forEach(link => {
@@ -8,6 +28,12 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             const targetId = this.getAttribute('href');
             const targetSection = document.querySelector(targetId);
+            
+            // Track navigation clicks
+            trackAmplitudeEvent('Navigation Click', {
+                link_text: this.textContent,
+                target_section: targetId
+            });
             
             if (targetSection) {
                 targetSection.scrollIntoView({
@@ -18,10 +44,24 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Add to cart functionality
+    // Add to cart functionality with Amplitude tracking
     const addToCartButtons = document.querySelectorAll('.add-to-cart');
     addToCartButtons.forEach(button => {
         button.addEventListener('click', function() {
+            // Get product info
+            const albumCard = this.closest('.album-card, .merch-item');
+            const productName = albumCard.querySelector('.album-title, h4')?.textContent || 'Unknown Product';
+            const productPrice = albumCard.querySelector('.album-price, .price')?.textContent || 'Unknown Price';
+            const artist = albumCard.querySelector('.album-artist')?.textContent || 'Unknown Artist';
+            
+            // Track add to cart event
+            trackAmplitudeEvent('Add to Cart', {
+                product_name: productName,
+                product_price: productPrice,
+                artist: artist,
+                product_type: albumCard.classList.contains('album-card') ? 'album' : 'merchandise'
+            });
+            
             // Create a visual feedback
             const originalText = this.textContent;
             this.textContent = 'Added! ✓';
@@ -38,11 +78,22 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Play button functionality for album covers
+    // Play button functionality for album covers with tracking
     const playButtons = document.querySelectorAll('.play-button');
     playButtons.forEach(button => {
         button.addEventListener('click', function(e) {
             e.stopPropagation();
+            
+            // Get album info
+            const albumCard = this.closest('.album-card');
+            const albumName = albumCard.querySelector('.album-title')?.textContent || 'Unknown Album';
+            const artist = albumCard.querySelector('.album-artist')?.textContent || 'Unknown Artist';
+            
+            // Track play button click
+            trackAmplitudeEvent('Play Button Click', {
+                album_name: albumName,
+                artist: artist
+            });
             
             // Create a sound wave animation
             createSoundWave(this);
@@ -52,16 +103,64 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Album card hover effects
+    // Album card hover effects with tracking
     const albumCards = document.querySelectorAll('.album-card');
     albumCards.forEach(card => {
         card.addEventListener('mouseenter', function() {
+            const albumName = this.querySelector('.album-title')?.textContent || 'Unknown Album';
+            const artist = this.querySelector('.album-artist')?.textContent || 'Unknown Artist';
+            
+            // Track album hover
+            trackAmplitudeEvent('Album Hover', {
+                album_name: albumName,
+                artist: artist
+            });
+            
             this.style.transform = 'translateY(-10px) scale(1.02)';
         });
         
         card.addEventListener('mouseleave', function() {
             this.style.transform = 'translateY(0) scale(1)';
         });
+    });
+
+    // CTA button special effect with tracking
+    const ctaButton = document.querySelector('.cta-button');
+    if (ctaButton) {
+        ctaButton.addEventListener('click', function() {
+            // Track CTA click
+            trackAmplitudeEvent('CTA Button Click', {
+                button_text: this.textContent,
+                section: 'hero'
+            });
+            
+            // Create a cyber explosion effect
+            createCyberExplosion(this);
+            showNotification('Welcome to the Matrix! 🚀');
+        });
+    }
+
+    // Track section views as user scrolls
+    const sections = document.querySelectorAll('section[id]');
+    const observerOptions = {
+        root: null,
+        rootMargin: '-50% 0px -50% 0px',
+        threshold: 0
+    };
+
+    const sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                trackAmplitudeEvent('Section View', {
+                    section_id: entry.target.id,
+                    section_name: entry.target.querySelector('h2, h3')?.textContent || entry.target.id
+                });
+            }
+        });
+    }, observerOptions);
+
+    sections.forEach(section => {
+        sectionObserver.observe(section);
     });
 
     // Matrix-style background animation
@@ -76,16 +175,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 glitchTitle.style.animation = '';
             }, 100);
         }, 3000);
-    }
-
-    // CTA button special effect
-    const ctaButton = document.querySelector('.cta-button');
-    if (ctaButton) {
-        ctaButton.addEventListener('click', function() {
-            // Create a cyber explosion effect
-            createCyberExplosion(this);
-            showNotification('Welcome to the Matrix! 🚀');
-        });
     }
 
     // Add parallax effect to hero section

@@ -6,46 +6,6 @@
     <title>Y2K K-Pop Store</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Comic+Neue:wght@300;400;700&display=swap" rel="stylesheet">
-    
-    <!-- Amplitude Analytics -->
-    <script src="https://cdn.amplitude.com/script/6d4b73beefd506ae720715efeff6a26a.js"></script>
-    <script>
-        // Wait for Amplitude to load
-        window.addEventListener('load', function() {
-            if (typeof window.amplitude !== 'undefined') {
-                console.log('Amplitude loaded successfully');
-                
-                // Add session replay plugin
-                window.amplitude.add(window.sessionReplay.plugin({sampleRate: 1}));
-                
-                // Initialize Amplitude
-                window.amplitude.init('6d4b73beefd506ae720715efeff6a26a', {
-                    "fetchRemoteConfig": true,
-                    "autocapture": {
-                        "attribution": true,
-                        "fileDownloads": true,
-                        "formInteractions": true,
-                        "pageViews": true,
-                        "sessions": true,
-                        "elementInteractions": true,
-                        "networkTracking": true,
-                        "webVitals": true,
-                        "frustrationInteractions": true
-                    }
-                });
-                
-                // Test event to verify it's working
-                window.amplitude.track('Page Loaded', {
-                    page: 'Y2K K-Pop Store',
-                    timestamp: new Date().toISOString()
-                });
-                
-                console.log('Amplitude initialized and test event sent');
-            } else {
-                console.error('Amplitude failed to load');
-            }
-        });
-    </script>
 </head>
 <body>
     <div class="matrix-bg"></div>
