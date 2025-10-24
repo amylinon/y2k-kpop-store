@@ -1,6 +1,8 @@
-// Y2K K-Pop Store Interactive Elements with Amplitude and Statsig Tracking
+// Y2K K-Pop Store Interactive Elements with Enhanced Statsig Debugging
 
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 DOM Content Loaded - Starting initialization...');
+    
     // Initialize Amplitude tracking for interactive elements
     function trackAmplitudeEvent(eventName, properties = {}) {
         try {
@@ -10,31 +12,58 @@ document.addEventListener('DOMContentLoaded', function() {
                     timestamp: new Date().toISOString(),
                     page: 'Y2K K-Pop Store'
                 });
-                console.log('Amplitude event tracked:', eventName, properties);
+                console.log('📊 Amplitude event tracked:', eventName, properties);
             } else {
-                console.warn('Amplitude not available for tracking:', eventName);
+                console.warn('⚠️ Amplitude not available for tracking:', eventName);
             }
         } catch (error) {
-            console.error('Amplitude tracking error:', error);
+            console.error('❌ Amplitude tracking error:', error);
         }
     }
 
-    // Initialize Statsig tracking with error handling
+    // Enhanced Statsig tracking with debugging
     function trackStatsigEvent(eventName, value = null, metadata = {}) {
         try {
             if (typeof window.myStatsigClient !== 'undefined') {
+                console.log('📈 Sending Statsig event:', eventName, value, metadata);
                 window.myStatsigClient.logEvent(eventName, value, metadata);
-                console.log('Statsig event logged:', eventName, value, metadata);
+                console.log('✅ Statsig event logged:', eventName, value, metadata);
+                
+                // Flush immediately for testing
+                window.myStatsigClient.flush().then(() => {
+                    console.log('🔄 Statsig events flushed');
+                }).catch(err => {
+                    console.error('❌ Statsig flush error:', err);
+                });
             } else {
-                console.warn('Statsig client not available for tracking:', eventName);
+                console.warn('⚠️ Statsig client not available for tracking:', eventName);
+                console.log('Available window properties:', Object.keys(window).filter(k => k.includes('Statsig')));
             }
         } catch (error) {
-            console.error('Statsig tracking error:', error);
+            console.error('❌ Statsig tracking error:', error);
         }
     }
 
-    // Wait a bit for Statsig to initialize
-    setTimeout(() => {
+    // Wait for Statsig to initialize
+    const waitForStatsig = () => {
+        return new Promise((resolve) => {
+            const checkStatsig = () => {
+                if (typeof window.myStatsigClient !== 'undefined') {
+                    console.log('✅ Statsig client found');
+                    resolve();
+                } else {
+                    console.log('⏳ Waiting for Statsig client...');
+                    setTimeout(checkStatsig, 500);
+                }
+            };
+            checkStatsig();
+        });
+    };
+
+    // Initialize tracking after Statsig is ready
+    waitForStatsig().then(() => {
+        console.log('🎯 Starting event tracking...');
+        
         // Track page view
         trackAmplitudeEvent('Page View', {
             page_title: 'Y2K K-Pop Store',
@@ -42,9 +71,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         trackStatsigEvent('page_view', 'Y2K K-Pop Store', {
             page_title: 'Y2K K-Pop Store',
-            section: 'home'
+            section: 'home',
+            timestamp: new Date().toISOString()
         });
-    }, 1000);
+    });
 
     // Smooth scrolling for navigation links
     const navLinks = document.querySelectorAll('.nav-link');
@@ -61,7 +91,8 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             trackStatsigEvent('navigation_click', targetId, {
                 link_text: this.textContent,
-                target_section: targetId
+                target_section: targetId,
+                timestamp: new Date().toISOString()
             });
             
             if (targetSection) {
@@ -73,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Add to cart functionality with both Amplitude and Statsig tracking
+    // Add to cart functionality with both tracking
     const addToCartButtons = document.querySelectorAll('.add-to-cart');
     addToCartButtons.forEach(button => {
         button.addEventListener('click', function() {
@@ -98,7 +129,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     price: productPrice,
                     item_name: productName,
                     artist: artist,
-                    product_type: productType
+                    product_type: productType,
+                    timestamp: new Date().toISOString()
                 });
                 
                 // Create a visual feedback
@@ -141,7 +173,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Track play button click with Statsig
                 trackStatsigEvent('play_button_click', albumName, {
                     album_name: albumName,
-                    artist: artist
+                    artist: artist,
+                    timestamp: new Date().toISOString()
                 });
                 
                 // Create a sound wave animation
@@ -172,7 +205,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Track album hover with Statsig
                 trackStatsigEvent('album_hover', albumName, {
                     album_name: albumName,
-                    artist: artist
+                    artist: artist,
+                    timestamp: new Date().toISOString()
                 });
                 
                 this.style.transform = 'translateY(-10px) scale(1.02)';
@@ -200,7 +234,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Track CTA click with Statsig
                 trackStatsigEvent('cta_button_click', this.textContent, {
                     button_text: this.textContent,
-                    section: 'hero'
+                    section: 'hero',
+                    timestamp: new Date().toISOString()
                 });
                 
                 // Create a cyber explosion effect
@@ -233,7 +268,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Track section view with Statsig
                     trackStatsigEvent('section_view', entry.target.id, {
                         section_id: entry.target.id,
-                        section_name: entry.target.querySelector('h2, h3')?.textContent || entry.target.id
+                        section_name: entry.target.querySelector('h2, h3')?.textContent || entry.target.id,
+                        timestamp: new Date().toISOString()
                     });
                 } catch (error) {
                     console.error('Section view error:', error);
@@ -269,17 +305,17 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Flush Statsig events periodically with error handling
+    // Enhanced Statsig event flushing
     setInterval(async () => {
         try {
             if (typeof window.myStatsigClient !== 'undefined') {
                 await window.myStatsigClient.flush();
-                console.log('Statsig events flushed');
+                console.log('🔄 Statsig events flushed (periodic)');
             }
         } catch (error) {
-            console.error('Statsig flush error:', error);
+            console.error('❌ Statsig flush error:', error);
         }
-    }, 10000); // Flush every 10 seconds
+    }, 5000); // Flush every 5 seconds for testing
 });
 
 // Helper Functions

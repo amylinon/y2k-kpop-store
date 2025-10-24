@@ -8,27 +8,30 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Comic+Neue:wght@300;400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.amplitude.com/script/6d4b73beefd506ae720715efeff6a26a.js"></script><script>window.amplitude.add(window.sessionReplay.plugin({sampleRate: 1}));window.amplitude.init('6d4b73beefd506ae720715efeff6a26a', {"fetchRemoteConfig":true,"autocapture":{"attribution":true,"fileDownloads":true,"formInteractions":true,"pageViews":true,"sessions":true,"elementInteractions":true,"networkTracking":true,"webVitals":true,"frustrationInteractions":true}});</script>
     
-    <!-- Statsig SDK - Using CDN approach -->
-    <script src="https://cdn.jsdelivr.net/npm/@statsig/js-client@latest/dist/statsig-js-client.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@statsig/session-replay@latest/dist/index.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@statsig/web-analytics@latest/dist/index.js"></script>
+    <!-- Statsig SDK - Using official CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@statsig/js-client@latest/dist/statsig-js-client+session-replay+web-analytics.min.js"></script>
     
     <script>
-        // Initialize Statsig after all scripts load
+        // Initialize Statsig with proper error handling
         window.addEventListener('load', async function() {
             try {
-                console.log('Initializing Statsig...');
+                console.log('Starting Statsig initialization...');
+                
+                // Wait a bit for scripts to load
+                await new Promise(resolve => setTimeout(resolve, 1000));
                 
                 // Check if Statsig is available
                 if (typeof window.StatsigClient === 'undefined') {
-                    console.error('StatsigClient not found. Trying alternative approach...');
+                    console.error('StatsigClient not found. Available globals:', Object.keys(window).filter(k => k.includes('Statsig')));
                     return;
                 }
                 
-                // Create Statsig client
+                console.log('StatsigClient found, creating client...');
+                
+                // Create Statsig client with proper configuration
                 const myStatsigClient = new window.StatsigClient(
                     "client-wfc6mrHMMNblKH5jHe2piKSzRHipfR75T6eyY0cmir0", 
-                    { userID: "user-id" },
+                    { userID: "user-" + Math.random().toString(36).substr(2, 9) },
                     {
                         plugins: [
                             new window.StatsigSessionReplayPlugin(),
@@ -37,24 +40,33 @@
                     }
                 );
                 
+                console.log('Statsig client created, initializing...');
+                
                 // Initialize Statsig
                 await myStatsigClient.initializeAsync();
                 
                 // Make Statsig client globally available
                 window.myStatsigClient = myStatsigClient;
                 
-                console.log('Statsig initialized successfully');
+                console.log('✅ Statsig initialized successfully');
                 
-                // Test event
+                // Test event with proper parameters
                 myStatsigClient.logEvent('page_view', 'Y2K K-Pop Store', {
                     page_title: 'Y2K K-Pop Store',
-                    timestamp: new Date().toISOString()
+                    timestamp: new Date().toISOString(),
+                    user_agent: navigator.userAgent,
+                    url: window.location.href
                 });
                 
-                console.log('Statsig test event sent');
+                console.log('✅ Statsig test event sent');
+                
+                // Flush events immediately
+                await myStatsigClient.flush();
+                console.log('✅ Statsig events flushed');
                 
             } catch (error) {
-                console.error('Statsig initialization failed:', error);
+                console.error('❌ Statsig initialization failed:', error);
+                console.error('Error details:', error.message, error.stack);
             }
         });
     </script>
