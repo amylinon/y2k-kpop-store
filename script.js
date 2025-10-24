@@ -1,7 +1,10 @@
-// Y2K K-Pop Store Interactive Elements with Enhanced Statsig Debugging
+// Y2K K-Pop Store with Optimized Statsig Event Formatting
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🚀 DOM Content Loaded - Starting initialization...');
+    
+    // Track page load time for user journey analysis
+    const pageLoadTime = Date.now();
     
     // Initialize Amplitude tracking for interactive elements
     function trackAmplitudeEvent(eventName, properties = {}) {
@@ -21,13 +24,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Enhanced Statsig tracking with debugging
-    function trackStatsigEvent(eventName, value = null, metadata = {}) {
+    // Optimized Statsig tracking with proper event formatting
+    function trackStatsigEvent(eventName, eventValue, metadata = {}) {
         try {
             if (typeof window.myStatsigClient !== 'undefined') {
-                console.log('📈 Sending Statsig event:', eventName, value, metadata);
-                window.myStatsigClient.logEvent(eventName, value, metadata);
-                console.log('✅ Statsig event logged:', eventName, value, metadata);
+                console.log('�� Sending Statsig event:', eventName, eventValue, metadata);
+                window.myStatsigClient.logEvent(eventName, eventValue, metadata);
+                console.log('✅ Statsig event logged:', eventName, eventValue, metadata);
                 
                 // Flush immediately for testing
                 window.myStatsigClient.flush().then(() => {
@@ -37,7 +40,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             } else {
                 console.warn('⚠️ Statsig client not available for tracking:', eventName);
-                console.log('Available window properties:', Object.keys(window).filter(k => k.includes('Statsig')));
             }
         } catch (error) {
             console.error('❌ Statsig tracking error:', error);
@@ -64,14 +66,16 @@ document.addEventListener('DOMContentLoaded', function() {
     waitForStatsig().then(() => {
         console.log('🎯 Starting event tracking...');
         
-        // Track page view
+        // Track page view with proper formatting
         trackAmplitudeEvent('Page View', {
             page_title: 'Y2K K-Pop Store',
             section: 'home'
         });
-        trackStatsigEvent('page_view', 'Y2K K-Pop Store', {
+        trackStatsigEvent('page_view', 'home_page_loaded', {
             page_title: 'Y2K K-Pop Store',
-            section: 'home',
+            page_section: 'home',
+            site_theme: 'y2k_retro',
+            user_agent: navigator.userAgent,
             timestamp: new Date().toISOString()
         });
     });
@@ -89,9 +93,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 link_text: this.textContent,
                 target_section: targetId
             });
-            trackStatsigEvent('navigation_click', targetId, {
+            trackStatsigEvent('navigation_click', targetId.replace('#', ''), {
                 link_text: this.textContent,
                 target_section: targetId,
+                navigation_type: 'smooth_scroll',
                 timestamp: new Date().toISOString()
             });
             
@@ -104,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Add to cart functionality with both tracking
+    // Enhanced Add to Cart functionality with optimized Statsig formatting
     const addToCartButtons = document.querySelectorAll('.add-to-cart');
     addToCartButtons.forEach(button => {
         button.addEventListener('click', function() {
@@ -116,6 +121,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 const artist = albumCard.querySelector('.album-artist')?.textContent || 'Unknown Artist';
                 const productType = albumCard.classList.contains('album-card') ? 'album' : 'merchandise';
                 
+                // Extract numeric price
+                const numericPrice = parseFloat(productPrice.replace('$', '')) || 0;
+                
+                // Create product ID
+                const productId = `${artist}_${productName.replace(/\s+/g, '_')}`;
+                
                 // Track add to cart event with Amplitude
                 trackAmplitudeEvent('Add to Cart', {
                     product_name: productName,
@@ -124,12 +135,21 @@ document.addEventListener('DOMContentLoaded', function() {
                     product_type: productType
                 });
                 
-                // Track add to cart event with Statsig
-                trackStatsigEvent('add_to_cart', productName, {
-                    price: productPrice,
-                    item_name: productName,
+                // Optimized Statsig event formatting for e-commerce
+                trackStatsigEvent('add_to_cart', productId, {
+                    product_id: productId,
+                    product_name: productName,
                     artist: artist,
+                    price: numericPrice,
+                    currency: 'USD',
+                    quantity: 1,
                     product_type: productType,
+                    category: 'K-Pop',
+                    subcategory: artist,
+                    page_section: albumCard.closest('.artist-section') ? 'featured_albums' : 'merchandise',
+                    user_action: 'add_to_cart_click',
+                    button_location: 'product_card',
+                    time_on_page: Date.now() - pageLoadTime,
                     timestamp: new Date().toISOString()
                 });
                 
@@ -152,7 +172,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Play button functionality for album covers with both tracking
+    // Play button functionality with optimized tracking
     const playButtons = document.querySelectorAll('.play-button');
     playButtons.forEach(button => {
         button.addEventListener('click', function(e) {
@@ -170,10 +190,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     artist: artist
                 });
                 
-                // Track play button click with Statsig
-                trackStatsigEvent('play_button_click', albumName, {
+                // Optimized Statsig event for media interaction
+                trackStatsigEvent('media_interaction', 'album_preview_play', {
                     album_name: albumName,
                     artist: artist,
+                    media_type: 'album_preview',
+                    interaction_type: 'play_button_click',
+                    product_id: `${artist}_${albumName.replace(/\s+/g, '_')}`,
+                    page_section: 'featured_albums',
                     timestamp: new Date().toISOString()
                 });
                 
@@ -188,7 +212,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Album card hover effects with both tracking
+    // Album card hover effects with engagement tracking
     const albumCards = document.querySelectorAll('.album-card');
     albumCards.forEach(card => {
         card.addEventListener('mouseenter', function() {
@@ -202,10 +226,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     artist: artist
                 });
                 
-                // Track album hover with Statsig
-                trackStatsigEvent('album_hover', albumName, {
+                // Optimized Statsig event for engagement tracking
+                trackStatsigEvent('product_engagement', 'album_hover', {
                     album_name: albumName,
                     artist: artist,
+                    product_id: `${artist}_${albumName.replace(/\s+/g, '_')}`,
+                    engagement_type: 'hover',
+                    page_section: 'featured_albums',
+                    time_on_page: Date.now() - pageLoadTime,
                     timestamp: new Date().toISOString()
                 });
                 
@@ -220,7 +248,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // CTA button special effect with both tracking
+    // CTA button with conversion tracking
     const ctaButton = document.querySelector('.cta-button');
     if (ctaButton) {
         ctaButton.addEventListener('click', function() {
@@ -231,10 +259,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     section: 'hero'
                 });
                 
-                // Track CTA click with Statsig
-                trackStatsigEvent('cta_button_click', this.textContent, {
+                // Optimized Statsig event for conversion tracking
+                trackStatsigEvent('conversion_event', 'hero_cta_click', {
                     button_text: this.textContent,
-                    section: 'hero',
+                    button_section: 'hero',
+                    conversion_type: 'cta_click',
+                    page_section: 'hero',
+                    time_on_page: Date.now() - pageLoadTime,
                     timestamp: new Date().toISOString()
                 });
                 
@@ -247,7 +278,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Track section views as user scrolls with both tracking
+    // Section view tracking with user journey
     const sections = document.querySelectorAll('section[id]');
     const observerOptions = {
         root: null,
@@ -265,10 +296,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         section_name: entry.target.querySelector('h2, h3')?.textContent || entry.target.id
                     });
                     
-                    // Track section view with Statsig
-                    trackStatsigEvent('section_view', entry.target.id, {
+                    // Optimized Statsig event for user journey
+                    trackStatsigEvent('user_journey', `section_view_${entry.target.id}`, {
                         section_id: entry.target.id,
                         section_name: entry.target.querySelector('h2, h3')?.textContent || entry.target.id,
+                        journey_step: entry.target.id,
+                        time_on_page: Date.now() - pageLoadTime,
                         timestamp: new Date().toISOString()
                     });
                 } catch (error) {
@@ -318,8 +351,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 5000); // Flush every 5 seconds for testing
 });
 
-// Helper Functions
-
+// Helper Functions (same as before)
 function createRippleEffect(element) {
     try {
         const ripple = document.createElement('div');
