@@ -1,4 +1,4 @@
-/* Y2K K-Pop Store Styles */
+/* Y2K K-Pop Store Styles with CSS Placeholders */
 
 /* Reset and Base Styles */
 * {
@@ -403,13 +403,34 @@ body {
     margin-bottom: 1rem;
     border-radius: 15px;
     overflow: hidden;
+    height: 300px;
+    background: linear-gradient(45deg, #ff00ff, #00ffff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
 }
 
 .album-image {
     width: 100%;
-    height: 300px;
+    height: 100%;
     object-fit: cover;
     transition: transform 0.3s ease;
+}
+
+/* CSS Placeholder for album covers */
+.album-cover::before {
+    content: attr(data-album);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #000;
+    font-weight: 700;
+    font-size: 1.2rem;
+    text-align: center;
+    z-index: 1;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
 }
 
 .album-overlay {
@@ -424,6 +445,7 @@ body {
     justify-content: center;
     opacity: 0;
     transition: opacity 0.3s ease;
+    z-index: 2;
 }
 
 .album-card:hover .album-overlay {
@@ -513,12 +535,36 @@ body {
     border-color: #00ffff;
 }
 
-.merch-image img {
-    width: 100%;
+.merch-image {
     height: 200px;
-    object-fit: cover;
+    background: linear-gradient(45deg, #ff00ff, #00ffff);
     border-radius: 10px;
     margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.merch-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.merch-image::before {
+    content: attr(data-item);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #000;
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-align: center;
+    z-index: 1;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
 }
 
 .merch-item h4 {
