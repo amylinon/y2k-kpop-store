@@ -8,29 +8,55 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Comic+Neue:wght@300;400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.amplitude.com/script/6d4b73beefd506ae720715efeff6a26a.js"></script><script>window.amplitude.add(window.sessionReplay.plugin({sampleRate: 1}));window.amplitude.init('6d4b73beefd506ae720715efeff6a26a', {"fetchRemoteConfig":true,"autocapture":{"attribution":true,"fileDownloads":true,"formInteractions":true,"pageViews":true,"sessions":true,"elementInteractions":true,"networkTracking":true,"webVitals":true,"frustrationInteractions":true}});</script>
     
-    <!-- Statsig SDK -->
-    <script type="module">
-        import { StatsigClient } from './node_modules/@statsig/js-client/dist/index.js';
-        import { StatsigSessionReplayPlugin } from './node_modules/@statsig/session-replay/dist/index.js';
-        import { StatsigAutoCapturePlugin } from './node_modules/@statsig/web-analytics/dist/index.js';
-
-        const myStatsigClient = new StatsigClient(
-            "client-wfc6mrHMMNblKH5jHe2piKSzRHipfR75T6eyY0cmir0", 
-            { userID: "user-id" },
-            {
-                plugins: [
-                    new StatsigSessionReplayPlugin(),
-                    new StatsigAutoCapturePlugin(),
-                ],
+    <!-- Statsig SDK - Using CDN approach -->
+    <script src="https://cdn.jsdelivr.net/npm/@statsig/js-client@latest/dist/statsig-js-client.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@statsig/session-replay@latest/dist/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@statsig/web-analytics@latest/dist/index.js"></script>
+    
+    <script>
+        // Initialize Statsig after all scripts load
+        window.addEventListener('load', async function() {
+            try {
+                console.log('Initializing Statsig...');
+                
+                // Check if Statsig is available
+                if (typeof window.StatsigClient === 'undefined') {
+                    console.error('StatsigClient not found. Trying alternative approach...');
+                    return;
+                }
+                
+                // Create Statsig client
+                const myStatsigClient = new window.StatsigClient(
+                    "client-wfc6mrHMMNblKH5jHe2piKSzRHipfR75T6eyY0cmir0", 
+                    { userID: "user-id" },
+                    {
+                        plugins: [
+                            new window.StatsigSessionReplayPlugin(),
+                            new window.StatsigAutoCapturePlugin(),
+                        ],
+                    }
+                );
+                
+                // Initialize Statsig
+                await myStatsigClient.initializeAsync();
+                
+                // Make Statsig client globally available
+                window.myStatsigClient = myStatsigClient;
+                
+                console.log('Statsig initialized successfully');
+                
+                // Test event
+                myStatsigClient.logEvent('page_view', 'Y2K K-Pop Store', {
+                    page_title: 'Y2K K-Pop Store',
+                    timestamp: new Date().toISOString()
+                });
+                
+                console.log('Statsig test event sent');
+                
+            } catch (error) {
+                console.error('Statsig initialization failed:', error);
             }
-        );
-
-        await myStatsigClient.initializeAsync();
-        
-        // Make Statsig client globally available
-        window.myStatsigClient = myStatsigClient;
-        
-        console.log('Statsig initialized successfully');
+        });
     </script>
 </head>
 <body>
