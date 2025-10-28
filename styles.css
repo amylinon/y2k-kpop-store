@@ -679,3 +679,24 @@ body {
         font-size: 2rem;
     }
 }
+
+/* Album Link Styling */
+.album-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: all 0.3s ease;
+}
+
+.album-link:hover {
+    transform: translateY(-5px);
+}
+
+.album-link:hover .album-cover {
+    box-shadow: 0 15px 40px rgba(0, 255, 255, 0.4), 0 0 30px rgba(255, 0, 255, 0.3);
+}
+
+.album-link:hover h3 {
+    color: #00ffff;
+    text-shadow: 0 0 10px #00ffff;
+}

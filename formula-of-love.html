@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formula of Love - TWICE | Y2K K-Pop Store</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="product-detail.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Comic+Neue:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.amplitude.com/script/6d4b73beefd506ae720715efeff6a26a.js"></script><script>window.amplitude.add(window.sessionReplay.plugin({sampleRate: 1}));window.amplitude.init('6d4b73beefd506ae720715efeff6a26a', {"fetchRemoteConfig":true,"autocapture":{"attribution":true,"fileDownloads":true,"formInteractions":true,"pageViews":true,"sessions":true,"elementInteractions":true,"networkTracking":true,"webVitals":true,"frustrationInteractions":true}});</script>
+    
+    <!-- Statsig SDK - Using official CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@statsig/js-client@latest/dist/statsig-js-client+session-replay+web-analytics.min.js"></script>
+    
+    <script>
+        // Initialize Statsig with proper error handling
+        window.addEventListener('load', async function() {
+            try {
+                console.log('Starting Statsig initialization...');
+                
+                // Wait a bit for scripts to load
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // Check if Statsig is available
+                if (typeof window.StatsigClient === 'undefined') {
+                    console.error('StatsigClient not found. Available globals:', Object.keys(window).filter(k => k.includes('Statsig')));
+                    return;
+                }
+                
+                console.log('StatsigClient found, creating client...');
+                
+                // Create Statsig client with proper configuration
+                const myStatsigClient = new window.StatsigClient(
+                    "client-wfc6mrHMMNblKH5jHe2piKSzRHipfR75T6eyY0cmir0", 
+                    { userID: "user-" + Math.random().toString(36).substr(2, 9) },
+                    {
+                        plugins: [
+                            new window.StatsigSessionReplayPlugin(),
+                            new window.StatsigAutoCapturePlugin(),
+                        ],
+                    }
+                );
+                
+                console.log('Statsig client created, initializing...');
+                
+                // Initialize Statsig
+                await myStatsigClient.initializeAsync();
+                
+                // Make Statsig client globally available
+                window.myStatsigClient = myStatsigClient;
+                
+                console.log('✅ Statsig initialized successfully');
+                
+                // Track product detail page view
+                myStatsigClient.logEvent('product_detail_view', 'TWICE_Formula_of_Love', {
+                    product_id: 'TWICE_Formula_of_Love',
+                    product_name: 'Formula of Love',
+                    artist: 'TWICE',
+                    page_type: 'product_detail',
+                    timestamp: new Date().toISOString()
+                });
+                
+                console.log('✅ Statsig product detail event sent');
+                
+                // Flush events immediately
+                await myStatsigClient.flush();
+                console.log('✅ Statsig events flushed');
+                
+            } catch (error) {
+                console.error('❌ Statsig initialization failed:', error);
+            }
+        });
+    </script>
+</head>
+<body>
+    <div class="matrix-bg"></div>
+    
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html" style="text-decoration: none; color: inherit;">
+                    <h1 class="glitch" data-text="Y2K POP">Y2K POP</h1>
+                    <p class="tagline">Digital Dreams • K-Pop Reality</p>
+                </a>
+            </div>
+            <nav class="nav">
+                <a href="index.html#home" class="nav-link">Home</a>
+                <a href="index.html#albums" class="nav-link">Albums</a>
+                <a href="index.html#merch" class="nav-link">Merch</a>
+                <a href="index.html#contact" class="nav-link">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Breadcrumb Navigation -->
+    <nav class="breadcrumb">
+        <div class="container">
+            <a href="index.html" class="breadcrumb-link">Home</a>
+            <span class="breadcrumb-separator">></span>
+            <a href="index.html#albums" class="breadcrumb-link">Albums</a>
+            <span class="breadcrumb-separator">></span>
+            <span class="breadcrumb-current">Formula of Love</span>
+        </div>
+    </nav>
+
+    <!-- Product Detail Section -->
+    <section class="product-detail">
+        <div class="container">
+            <div class="product-grid">
+                <!-- Product Image -->
+                <div class="product-image-section">
+                    <div class="product-image-container">
+                        <div class="product-image" data-album="Formula of Love">
+                            <div class="image-overlay">
+                                <button class="play-preview-btn">▶ Play Preview</button>
+                            </div>
+                        </div>
+                        <div class="image-thumbnails">
+                            <div class="thumbnail active" data-variant="main">Main</div>
+                            <div class="thumbnail" data-variant="photobook">Photobook</div>
+                            <div class="thumbnail" data-variant="cd">CD</div>
+                            <div class="thumbnail" data-variant="poster">Poster</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Info -->
+                <div class="product-info-section">
+                    <div class="product-badge">NEW RELEASE</div>
+                    <h1 class="product-title">Formula of Love</h1>
+                    <p class="product-artist">by TWICE</p>
+                    
+                    <div class="product-rating">
+                        <div class="stars">★★★★★</div>
+                        <span class="rating-text">(4.9/5) • 1,247 reviews</span>
+                    </div>
+
+                    <div class="product-price">
+                        <span class="current-price">$24.99</span>
+                        <span class="original-price">$29.99</span>
+                        <span class="discount">Save 17%</span>
+                    </div>
+
+                    <div class="product-description">
+                        <p>TWICE's third full-length album "Formula of Love: O+T=<3" is a musical journey through the complexities of love and relationships. This album showcases TWICE's evolution as artists with diverse musical styles and heartfelt lyrics.</p>
+                        
+                        <div class="tracklist">
+                            <h3>Tracklist:</h3>
+                            <ul>
+                                <li>1. Scientist</li>
+                                <li>2. Moonlight</li>
+                                <li>3. Icon</li>
+                                <li>4. Cruel</li>
+                                <li>5. Real You</li>
+                                <li>6. F.I.L.A (Fall In Love Again)</li>
+                                <li>7. Last Waltz</li>
+                                <li>8. Espresso</li>
+                                <li>9. Rewind</li>
+                                <li>10. Cactus</li>
+                                <li>11. Push & Pull</li>
+                                <li>12. Hello</li>
+                                <li>13. 1, 3, 2</li>
+                                <li>14. Candy</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="product-options">
+                        <div class="quantity-selector">
+                            <label>Quantity:</label>
+                            <div class="quantity-controls">
+                                <button class="quantity-btn" id="decrease-qty">-</button>
+                                <input type="number" id="quantity" value="1" min="1" max="10">
+                                <button class="quantity-btn" id="increase-qty">+</button>
+                            </div>
+                        </div>
+
+                        <div class="variant-selector">
+                            <label>Version:</label>
+                            <div class="variant-options">
+                                <button class="variant-btn active" data-variant="standard">Standard</button>
+                                <button class="variant-btn" data-variant="limited">Limited Edition</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-actions">
+                        <button class="add-to-cart-main" id="add-to-cart-main">
+                            <span class="cart-icon">🛒</span>
+                            Add to Cart
+                        </button>
+                        <button class="buy-now-btn" id="buy-now">
+                            Buy Now
+                        </button>
+                    </div>
+
+                    <div class="product-features">
+                        <div class="feature">
+                            <span class="feature-icon">🚚</span>
+                            <span>Free shipping on orders over $50</span>
+                        </div>
+                        <div class="feature">
+                            <span class="feature-icon">🔄</span>
+                            <span>30-day return policy</span>
+                        </div>
+                        <div class="feature">
+                            <span class="feature-icon">🎁</span>
+                            <span>Official TWICE merchandise</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Related Products -->
+    <section class="related-products">
+        <div class="container">
+            <h2 class="section-title">
+                <span class="section-title-text">More from TWICE</span>
+                <div class="title-underline"></div>
+            </h2>
+            <div class="related-grid">
+                <div class="related-item">
+                    <div class="related-image" data-album="Between 1&2"></div>
+                    <h4>Between 1&2</h4>
+                    <p class="price">$22.99</p>
+                    <a href="index.html#albums" class="view-product">View Product</a>
+                </div>
+                <div class="related-item">
+                    <div class="related-image" data-album="Ready to Be"></div>
+                    <h4>Ready to Be</h4>
+                    <p class="price">$26.99</p>
+                    <a href="index.html#albums" class="view-product">View Product</a>
+                </div>
+                <div class="related-item">
+                    <div class="related-image" data-album="Taste of Love"></div>
+                    <h4>Taste of Love</h4>
+                    <p class="price">$21.99</p>
+                    <a href="index.html#albums" class="view-product">View Product</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Y2K POP Store</h4>
+                    <p>Bringing you the best K-Pop albums with a nostalgic Y2K twist</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html#home">Home</a></li>
+                        <li><a href="index.html#albums">Albums</a></li>
+                        <li><a href="index.html#merch">Merchandise</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>Email: info@y2kpop.com</p>
+                    <p>Phone: 1-800-Y2K-POP</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Y2K POP Store. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="product-detail.js"></script>
+</body>
+</html>
