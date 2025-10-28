@@ -680,13 +680,6 @@ body {
     }
 }
 
-/* Album Link Styling */
-.album-link {
-    text-decoration: none;
-    color: inherit;
-    display: contents; /* Use contents to not affect layout */
-    transition: all 0.3s ease;
-}
 
 
 .album-link:hover .album-cover {
